@@ -4,6 +4,7 @@ import cat.tecnocampus.tinderlab2526.application.TinderService;
 import cat.tecnocampus.tinderlab2526.application.inputDTO.ProfileCommand;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.ProfileInformation;
 import cat.tecnocampus.tinderlab2526.domain.Profile;
+import cat.tecnocampus.tinderlab2526.domain.exceptions.IsNotCompatibleException;
 import cat.tecnocampus.tinderlab2526.persistence.ProfileRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -67,4 +68,17 @@ public class TinderServiceTest {
         assertTrue(target.doesLike(origin));
         assertTrue(origin.isMatched(target));
     }
+
+    @Test
+    public void addLikeNotCompatibleTest() {
+        Exception exception = assertThrows(IsNotCompatibleException.class, () -> {
+            tinderService.addLike(1L,2L);
+        });
+
+        String expectedMessage = "is not compatible with";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
 }

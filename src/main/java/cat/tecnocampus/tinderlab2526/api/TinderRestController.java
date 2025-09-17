@@ -4,6 +4,8 @@ import cat.tecnocampus.tinderlab2526.application.TinderService;
 import cat.tecnocampus.tinderlab2526.application.exceptions.ProfileDoesNotExistException;
 import cat.tecnocampus.tinderlab2526.application.inputDTO.ProfileCommand;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.ProfileInformation;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,7 +19,7 @@ public class TinderRestController {
     }
 
     @PostMapping("/profiles")
-    public ResponseEntity<Void> createProfile(@RequestBody ProfileCommand profileCommand, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Void> createProfile(@RequestBody @Valid ProfileCommand profileCommand, UriComponentsBuilder uriBuilder) {
         Long id = tinderService.createProfile(profileCommand); // Assume this returns the id
         var location = uriBuilder.path("/profiles/{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
@@ -29,5 +31,10 @@ public class TinderRestController {
         return profileInformation;
     }
 
+    @PostMapping("/profiles/{originId}/likes/{targetId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addLike(@PathVariable Long originId, @PathVariable Long targetId) {
+        tinderService.addLike(originId, targetId);
+    }
 
 }

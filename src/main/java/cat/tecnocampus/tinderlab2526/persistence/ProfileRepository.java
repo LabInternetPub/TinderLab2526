@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ProfileRepository extends CrudRepository<Profile, Long> {
 
     @Query("""
-        SELECT p.id AS id, p.email AS email, p.nickname AS nickname, p.gender as genderDTO, p.attraction as attractionDTO, p.passion AS passionDTO
+        SELECT p.id AS id, p.email AS email, p.nickname AS nickname, p.gender as gender, p.attraction as attraction, p.passion AS passion
         FROM Profile p
         WHERE p.id = :id
         """)

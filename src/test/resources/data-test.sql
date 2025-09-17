@@ -4,5 +4,5 @@ values ('alice@tecnocampus.cat', 'Alice', 'Woman', 'Woman', 'Music'),
        ('carol@tecnocampus.cat', 'Carol', 'Woman', 'Man', 'Dance'),
        ('dave@tecnocampus.cat', 'Dave', 'Man', 'Woman', 'Dance');
 
--- insert into like_profile(origin_profile_id, target_profile_id, creation_date, matched)
--- values (3, 4, current_date(), false); -- Carol likes Dave
+insert into like_profile(origin_profile_id, target_profile_id, creation_date, matched)
+values (3, 4, current_date(), false); -- Carol likes Dave

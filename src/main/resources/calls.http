@@ -1,3 +1,33 @@
 ###
 GET http://localhost:8080/profiles/1
 
+###
+GET http://localhost:8080/profiles/1000
+
+###
+POST http://localhost:8080/profiles
+content-type: application/json
+
+{
+  "email": "post@tecnocampus.cat",
+  "nickname": "Post",
+  "gender": "Woman",
+  "attraction": "Woman",
+  "passion": "Dance"
+  }
+
+###
+POST http://localhost:8080/profiles
+content-type: application/json
+
+{
+  "email": "post2@tecnocampus.cat",
+  "nickname": "ost",
+  "gender": "Woma",
+  "attraction": "Woma",
+  "passion": "Dane"
+  }
+
+###
+POST http://localhost:8080/profiles/1/likes/2
+content-type: application/json

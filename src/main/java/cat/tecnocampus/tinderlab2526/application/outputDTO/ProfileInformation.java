@@ -4,7 +4,7 @@ public interface ProfileInformation {
     Long getId();
     String getEmail();
     String getNickname();
-    GenderDTO getGenderDTO();
-    GenderDTO getAttractionDTO();
-    PassionDTO getPassionDTO();
+    String getGender();
+    String getAttraction();
+    String getPassion();
 }
