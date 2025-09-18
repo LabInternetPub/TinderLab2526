@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 public class TinderRestController {
     private final TinderService tinderService;
@@ -35,6 +37,11 @@ public class TinderRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addLike(@PathVariable Long originId, @PathVariable Long targetId) {
         tinderService.addLike(originId, targetId);
+    }
+
+    @GetMapping("/profiles/{id}/candidates")
+    public List<ProfileInformation> getCandidates(@PathVariable Long id) {
+        return tinderService.getCandidates(id);
     }
 
 }

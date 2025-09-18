@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -39,9 +43,10 @@ public class TinderServiceTest {
         long before = profileRepository.count();
         Long id = tinderService.createProfile(profileCommand);
         long after = profileRepository.count();
+
         assertEquals(before + 1, after);
         assertNotNull(id);
-        assertEquals("Paco", profileRepository.findById(after).orElseThrow().getNickname());
+        assertEquals("Paco", profileRepository.findById(id).orElseThrow().getNickname());
     }
 
     @Test
@@ -67,6 +72,7 @@ public class TinderServiceTest {
         assertTrue(origin.doesLike(target));
         assertTrue(target.doesLike(origin));
         assertTrue(origin.isMatched(target));
+        assertTrue(target.isMatched(origin));
     }
 
     @Test
@@ -81,4 +87,34 @@ public class TinderServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    @Test
+    public void getCandidatesEmptyTest() {
+        assertTrue(tinderService.getCandidates(6L).isEmpty());
+    }
+
+    @Test
+    public void getCandidatesNotEmptyTest() {
+        List<ProfileInformation> candidates = tinderService.getCandidates(3L);
+        List<Long> ids = candidates.stream().map(ProfileInformation::getId).toList();
+
+        assertEquals(2, candidates.size());
+        assertThat(ids, containsInAnyOrder(2L, 4L));
+    }
+
+    @Test
+    public void getCandidatesOriginNotIncludedTest() {
+        List<ProfileInformation> candidates = tinderService.getCandidates(1L);
+
+        assertEquals(1, candidates.size());
+        assertEquals(5L, candidates.get(0).getId());
+    }
+
+    @Test
+    public void getCandidatesNotExistingOriginTest() {
+        Exception exception = assertThrows(cat.tecnocampus.tinderlab2526.application.exceptions.ProfileDoesNotExistException.class, () -> {
+            tinderService.getCandidates(100L);
+        });
+
+        assertEquals("Origin profile with Id: 100 not found", exception.getMessage());
+    }
 }

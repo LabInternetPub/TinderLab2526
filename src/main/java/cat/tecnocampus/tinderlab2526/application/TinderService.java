@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import cat.tecnocampus.tinderlab2526.application.mappers.ProfileMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -33,9 +34,17 @@ public class TinderService {
 
     @Transactional
     public void addLike(Long originId, Long targetId) {
-        Profile origin = profileRepository.findByIdWithLikes(originId).orElseThrow(() -> new ProfileDoesNotExistException("Origin profile with Id: " + originId + " not found"));
-        Profile target = profileRepository.findByIdWithLikes(targetId).orElseThrow(() -> new ProfileDoesNotExistException("Target profile with Id: " + targetId + " not found"));
+        Profile origin = profileRepository.findByIdWithLikes(originId)
+                .orElseThrow(() -> new ProfileDoesNotExistException("Origin profile with Id: " + originId + " not found"));
+        Profile target = profileRepository.findByIdWithLikes(targetId)
+                .orElseThrow(() -> new ProfileDoesNotExistException("Target profile with Id: " + targetId + " not found"));
 
         origin.createAndMatchLike(target);
+    }
+
+    public List<ProfileInformation> getCandidates(Long originId) {
+        Profile origin = profileRepository.findById(originId)
+                .orElseThrow(() -> new ProfileDoesNotExistException("Origin profile with Id: " + originId + " not found"));
+        return profileRepository.findCandidatesByGenderAttractionAndPassion(origin);
     }
 }

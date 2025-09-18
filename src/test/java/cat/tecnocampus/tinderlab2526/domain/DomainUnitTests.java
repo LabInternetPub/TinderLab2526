@@ -8,43 +8,49 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DomainUnitTests {
 
     @Test
-    void CompatibleAttractionAndPassionTheSame() {
+    void CompatibleAndAttractionAndPassionTheSame() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile woman = ProfilesMotherTest.WomanAttractedByManPassionMusicProfiles(2L);
+
         assertTrue(man.isCompatible(woman));
     }
 
     @Test
-    void IncompatibleAttractionSamePassionDifferent() {
+    void IncompatibleAndAttractionSameAndPassionDifferent() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile woman = ProfilesMotherTest.WomanAttractedByManPassionDanceProfiles(2L);
+
         assertFalse(man.isCompatible(woman));
     }
 
     @Test
-    void IncompatibleAttractionDifferentPassionSame() {
+    void IncompatibleAndAttractionDifferentAndPassionSame() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile man2 = ProfilesMotherTest.ManAttractedByWomanPassionDanceProfiles(2L);
+
         assertFalse((man.isCompatible(man2)));
     }
 
     @Test
-    void CompatibleAttractionBisexualPassionSame() {
+    void CompatibleAndAttractionBisexualAndPassionSame() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+
         assertTrue(bisexualWoman.isCompatible(man));
     }
 
     @Test
-    void IncompatibleAttractionBisexualPassionDifferent() {
+    void IncompatibleAndAttractionBisexualAndPassionDifferent() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionDanceProfiles(1L);
         Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+
         assertFalse(bisexualWoman.isCompatible(man));
     }
 
     @Test
     void IncompatibleToYourself() {
         Profile profile = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
+
         assertFalse(profile.isCompatible(profile));
     }
 
@@ -52,11 +58,10 @@ public class DomainUnitTests {
     void likeToIncompatible() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionDanceProfiles(1L);
         Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
-        // assert exception isNotCompatibleException is thrown
+
         Exception exception = assertThrows(IsNotCompatibleException.class, () -> {
             man.createAndMatchLike(bisexualWoman);
         });
-
         String expectedMessage = man.getNickname() + " is not compatible with " + bisexualWoman.getNickname();
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.equals(expectedMessage));
@@ -66,7 +71,9 @@ public class DomainUnitTests {
     void likeToCompatibleNotMatched() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+
         man.createAndMatchLike(bisexualWoman);
+
         assertTrue(man.doesLike(bisexualWoman));
         assertFalse(man.isMatched(bisexualWoman));
     }
@@ -75,11 +82,21 @@ public class DomainUnitTests {
     void likeToCompatibleAndMatched() {
         Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
         Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+
         man.createAndMatchLike(bisexualWoman);
         bisexualWoman.createAndMatchLike(man);
+
         assertTrue(man.doesLike(bisexualWoman));
         assertTrue(man.isMatched(bisexualWoman));
         assertTrue(bisexualWoman.doesLike(man));
         assertTrue(bisexualWoman.isMatched(man));
+    }
+
+    @Test
+    void isNotMachedWhenNotLiked() {
+        Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
+        Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+
+        assertFalse(man.isMatched(bisexualWoman));
     }
 }
