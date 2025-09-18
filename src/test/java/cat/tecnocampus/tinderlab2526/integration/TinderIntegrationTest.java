@@ -4,6 +4,7 @@ import cat.tecnocampus.tinderlab2526.domain.ProfilesMotherTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Profile;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Profile("test")
@@ -20,6 +22,9 @@ public class TinderIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private cat.tecnocampus.tinderlab2526.persistence.ProfileRepository profileRepository;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +64,10 @@ public class TinderIntegrationTest {
                 .post("/profiles/{originId}/likes/{targetId}", 2L, 3L)
             .then()
                 .statusCode(HttpStatus.NO_CONTENT.value());
+
+        profileRepository.findByIdWithLikes(2L).ifPresent(origin -> {
+            assertEquals(1, origin.getLikes().size());
+        });
     }
 
     @Test
@@ -76,7 +85,7 @@ public class TinderIntegrationTest {
     @Test
     public void postCorrectProfile() {
         cat.tecnocampus.tinderlab2526.domain.Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(null);
-        RestAssured
+        var response = RestAssured
                 .given()
                 .contentType("application/json")
                 .body(man)
@@ -86,7 +95,12 @@ public class TinderIntegrationTest {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body(equalTo(""))
-                .header("Location", matchesRegex(".*profiles\\/\\d+$"));
+                .header("Location", matchesRegex(".*profiles\\/\\d+$"))
+                .extract().response();
+
+        String location = response.getHeader("Location");
+        Long id = Long.valueOf(location.substring(location.lastIndexOf('/') + 1));
+        assertEquals("ManAttractedByManPassionMusic", profileRepository.findById(id).orElseThrow().getNickname());
     }
 
     @Test

@@ -121,6 +121,10 @@ public class Profile {
 		return like;
 	}
 
+	public List<Like> getLikes() {
+		return List.copyOf(likes);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) return false;

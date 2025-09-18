@@ -5,8 +5,8 @@ public class ProfilesMotherTest {
     public static Profile ManAttractedByWomanPassionMusicProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("ManAttractedByManPassionMusic" + id);
-        profile.setEmail("ManAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("ManAttractedByManPassionMusic");
+        profile.setEmail("ManAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Man);
         profile.setAttraction(Gender.Woman);
         profile.setPassion(Passion.Music);
@@ -16,8 +16,8 @@ public class ProfilesMotherTest {
     public static Profile ManAttractedByWomanPassionDanceProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("ManAttractedByManPassionMusic" + id);
-        profile.setEmail("ManAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("ManAttractedByManPassionMusic");
+        profile.setEmail("ManAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Man);
         profile.setAttraction(Gender.Woman);
         profile.setPassion(Passion.Dance);
@@ -27,8 +27,8 @@ public class ProfilesMotherTest {
     public static Profile WomanAttractedByManPassionMusicProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("WomanAttractedByManPassionMusic" + id);
-        profile.setEmail("WomanAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("WomanAttractedByManPassionMusic");
+        profile.setEmail("WomanAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Man);
         profile.setPassion(Passion.Music);
@@ -38,8 +38,8 @@ public class ProfilesMotherTest {
     public static Profile WomanAttractedByManPassionDanceProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("WomanAttractedByManPassionMusic" + id);
-        profile.setEmail("WomanAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("WomanAttractedByManPassionMusic");
+        profile.setEmail("WomanAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Man);
         profile.setPassion(Passion.Dance);
@@ -49,8 +49,8 @@ public class ProfilesMotherTest {
     public static Profile WomanAttractedByBisexualPassionMusicProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("WomanAttractedByManPassionMusic" + id);
-        profile.setEmail("WomanAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("WomanAttractedByManPassionMusic");
+        profile.setEmail("WomanAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Bisexual);
         profile.setPassion(Passion.Music);
@@ -60,8 +60,8 @@ public class ProfilesMotherTest {
     public static Profile WomanAttractedByBisexualPassionDanceProfiles(Long id) {
         Profile profile = new Profile();
         profile.setId(id);
-        profile.setNickname("WomanAttractedByManPassionMusic" + id);
-        profile.setEmail("WomanAttractedByManPassionMusic" + id + "@email.com");
+        profile.setNickname("WomanAttractedByManPassionMusic");
+        profile.setEmail("WomanAttractedByManPassionMusic@email.com");
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Bisexual);
         profile.setPassion(Passion.Dance);

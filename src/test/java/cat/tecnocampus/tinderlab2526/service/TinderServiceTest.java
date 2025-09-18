@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -18,6 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Sql(statements = {"DELETE FROM like_profile", "DELETE FROM profile", "ALTER TABLE profile ALTER COLUMN id RESTART WITH 1"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "classpath:data-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class TinderServiceTest {
     @Autowired
     private TinderService tinderService;
@@ -116,5 +118,20 @@ public class TinderServiceTest {
         });
 
         assertEquals("Origin profile with Id: 100 not found", exception.getMessage());
+    }
+
+    @Test void getProfileLikesTest() {
+        var likes = tinderService.getProfileLikes(3L);
+        assertEquals(1, likes.size());
+        assertTrue(likes.stream().anyMatch(like -> like.targetId().equals(4L) && !like.matched()));
+    }
+
+    @Test
+    public void getLikesNotExistingProfileTest() {
+        Exception exception = assertThrows(cat.tecnocampus.tinderlab2526.application.exceptions.ProfileDoesNotExistException.class, () -> {
+            tinderService.getProfileLikes(100L);
+        });
+
+        assertEquals("Profile with Id: 100 not found", exception.getMessage());
     }
 }
