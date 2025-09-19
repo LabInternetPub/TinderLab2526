@@ -1,7 +1,7 @@
 package cat.tecnocampus.tinderlab2526.application.mappers;
 
-import cat.tecnocampus.tinderlab2526.domain.Like;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.LikeInformation;
+import cat.tecnocampus.tinderlab2526.domain.Like;
 
 public class LikeMapper {
     public static LikeInformation toLikeInformation(Like like) {
