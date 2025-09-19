@@ -55,7 +55,7 @@ before reaching the application layer.
 This layer also handles exceptions thrown by the other layers and returns appropriate HTTP status codes and messages to the client. It uses global exception handling with **@ControllerAdvice** 
 and **@ExceptionHandler** annotations. It returns error messages in a **ProblemDetail** object, which is a standard way (RFC 9457) to represent errors in REST APIs.
 Note also that the API follows the RESTful principles, using appropriate HTTP methods (GET, POST) and status codes (200 OK, 201 Created, 400 Bad Request, 404 Not Found).
-See [RESTful] for a good REST API design. For example, when a new profile is created with a POST, the API returns a 201 Created status code with the 
+See [[RESTful]](#3) for a good REST API design. For example, when a new profile is created with a POST, the API returns a 201 Created status code with the 
 location of the new resource in the Location header and the body is empty.
 
 ### Persistence layer
@@ -68,19 +68,19 @@ Let comment some points of the domain annotations:
 - All classes need an attribute annotated as an identifier because its objects will be a row in a relational database table
 - Like changes the table name because *"like"* is a SQL reserved word
 - A Profile has a list of Likes that is mapped with a @oneToMany annotations. It is more efficient in JPA to represent this kind of association with
-a bidirectional mapping [Vlad @oneToMany]. For this reason Like has an extra property (column in the database) pointing to the *origin* Profile.
+a bidirectional mapping [[Vlad @oneToMany]](#5). For this reason Like has an extra property (column in the database) pointing to the *origin* Profile.
 - The identifier of Like is a composed id formed by two foreign keys, one for the origin and the other for the destination Profiles.
-- The composed id of Like is implemented in the class LikePK. We chose to implement Like and LikePK as in [Hello Koding], but we could have done
-it as in [Vlad Composite]
+- The composed id of Like is implemented in the class LikePK. We chose to implement Like and LikePK as in [[Hello Koding]](#2), but we could have done
+it as in [[Vlad Composite]](#4)
 - To query tables in the database, the application layer (**TinderService**) uses the **ProfileRepository** interface that extends CRUDRepository, 
 which provides CRUD operations out of the box. Note also that the TinderService uses the **@Transactional** annotation to handle JPA sessions/transactions.
-Observe that when an object is modified within a transaction, JPA updates automatically the database. See [Vlad Persist].
+Observe that when an object is modified within a transaction, JPA updates automatically the database. See [[Vlad Persist]](#1).
 
 
 ## References
 
-- [Hello Koding](https://hellokoding.com/composite-primary-key-in-jpa-and-hibernate/)
-- [RESTful](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design)
-- [Vlad Composite](https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/)
-- [Vlad @oneToMany](https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/)
-- [Vlad Persist](https://vladmihalcea.com/jpa-persist-merge-hibernate-save-update-saveorupdate/)
+- <a id="1">[Vlad Persist]</a>  https://vladmihalcea.com/jpa-persist-merge-hibernate-save-update-saveorupdate/
+- <a id="2">[Hello Koding]</a> https://hellokoding.com/composite-primary-key-in-jpa-and-hibernate/
+- <a id="3">[RESTful]</a>https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
+- <a id="4">[Vlad Composite]</a>https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
+- <a id="5">[Vlad @oneToMany]</a>https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
