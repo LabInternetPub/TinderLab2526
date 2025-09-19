@@ -81,6 +81,6 @@ Observe that when an object is modified within a transaction, JPA updates automa
 
 - <a id="1">[Vlad Persist]</a>  https://vladmihalcea.com/jpa-persist-merge-hibernate-save-update-saveorupdate/
 - <a id="2">[Hello Koding]</a> https://hellokoding.com/composite-primary-key-in-jpa-and-hibernate/
-- <a id="3">[RESTful]</a>https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
-- <a id="4">[Vlad Composite]</a>https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
-- <a id="5">[Vlad @oneToMany]</a>https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
+- <a id="3">[RESTful]</a> https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
+- <a id="4">[Vlad Composite]</a> https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
+- <a id="5">[Vlad @oneToMany]</a> https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
