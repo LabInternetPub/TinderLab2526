@@ -84,6 +84,18 @@ public class TinderIntegrationTest {
     }
 
     @Test
+    public void addAlreadyExistingLike() {
+        RestAssured
+            .given()
+                .contentType("application/json")
+            .when()
+                .post("/profiles/{originId}/likes/{targetId}", 3L, 4L)
+            .then()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .body("title", equalTo("Duplicated like"));
+    }
+
+    @Test
     public void postCorrectProfile() {
         cat.tecnocampus.tinderlab2526.domain.Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(null);
         var response = RestAssured
