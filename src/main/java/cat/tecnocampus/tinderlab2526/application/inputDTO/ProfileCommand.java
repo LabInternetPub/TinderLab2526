@@ -1,6 +1,7 @@
 package cat.tecnocampus.tinderlab2526.application.inputDTO;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public record ProfileCommand(
@@ -17,5 +18,9 @@ public record ProfileCommand(
         String attraction,
 
         @Pattern(regexp = "^(Sport|Music|Walk|Dance)$", message = "Passion must be one of: Sport, Music, Walk, Dance")
-        String passion) {
+        String passion,
+
+        @NotBlank
+        String password)
+{
 }

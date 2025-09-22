@@ -6,9 +6,13 @@ import cat.tecnocampus.tinderlab2526.application.mappers.LikeMapper;
 import cat.tecnocampus.tinderlab2526.application.mappers.ProfileMapper;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.LikeInformation;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.ProfileInformation;
+import cat.tecnocampus.tinderlab2526.domain.ERole;
 import cat.tecnocampus.tinderlab2526.domain.Profile;
+import cat.tecnocampus.tinderlab2526.domain.Role;
 import cat.tecnocampus.tinderlab2526.persistence.ProfileRepository;
+import cat.tecnocampus.tinderlab2526.persistence.RoleRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +23,13 @@ import java.util.stream.Collectors;
 @Service
 public class TinderService {
     private final ProfileRepository profileRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public TinderService(ProfileRepository profileRepository) {
+    public TinderService(ProfileRepository profileRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.profileRepository = profileRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<ProfileInformation> getProfileById(Long id) {
@@ -29,7 +37,10 @@ public class TinderService {
     }
 
     public Long createProfile(ProfileCommand profileCommand) {
-        Profile profile = ProfileMapper.inputProfileToDomain(profileCommand);
+        ProfileCommand profileWithPassword = new ProfileCommand(profileCommand.email(), profileCommand.nickname(),
+                profileCommand.gender(), profileCommand.attraction(), profileCommand.passion(), passwordEncoder.encode(profileCommand.password()));
+        Profile profile = ProfileMapper.inputProfileToDomain(profileWithPassword);
+        profile.setRole(roleRepository.findByName(ERole.USER).orElseThrow(() -> new RuntimeException("Unknown Role")));  // By default, a new Profiles has role USER
         Profile savedProfile = this.profileRepository.save(profile);
         return savedProfile.getId();
     }

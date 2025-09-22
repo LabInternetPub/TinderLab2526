@@ -3,10 +3,7 @@ package cat.tecnocampus.tinderlab2526.domain;
 import cat.tecnocampus.tinderlab2526.domain.exceptions.IsNotCompatibleException;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 public class Profile {
@@ -15,6 +12,8 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
+
+	@Column(unique = true)
 	private String nickname;
 
 	@Enumerated(EnumType.STRING)
@@ -32,6 +31,14 @@ public class Profile {
 			orphanRemoval = true
 	)
 	private List<Like> likes = new ArrayList<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			joinColumns = @JoinColumn(name = "profile_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
+	private String password;
 
 	public Profile() {
 	}
@@ -130,6 +137,22 @@ public class Profile {
 		if (o == null || getClass() != o.getClass()) return false;
 		Profile profile = (Profile) o;
 		return Objects.equals(id, profile.id);
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRole(Role role) {
+		this.roles.add(role);
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

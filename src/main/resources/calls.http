@@ -1,8 +1,14 @@
 ###
 GET http://localhost:8080/profiles/1
+Authorization: {{auth_token}}
+
+###
+GET http://localhost:8080/profiles/me
+Authorization: {{auth_token}}
 
 ###
 GET http://localhost:8080/profiles/1000
+Authorization: {{auth_token}}
 
 ###
 POST http://localhost:8080/profiles
@@ -13,8 +19,9 @@ content-type: application/json
   "nickname": "Post",
   "gender": "Woman",
   "attraction": "Woman",
-  "passion": "Dance"
-  }
+  "passion": "Dance",
+  "password": "pepito"
+}
 
 ###
 POST http://localhost:8080/profiles
@@ -25,9 +32,50 @@ content-type: application/json
   "nickname": "ost",
   "gender": "Woma",
   "attraction": "Woma",
-  "passion": "Dane"
+  "passion": "Dane",
+  "password": "   "
   }
 
 ###
 POST http://localhost:8080/profiles/1/likes/2
 content-type: application/json
+Authorization: {{auth_token}}
+
+###
+POST http://localhost:8080/profiles/me/likes/3
+content-type: application/json
+Authorization: {{auth_token}}
+
+### login
+POST http://localhost:8080/loginJWT
+content-type: application/json
+
+{
+  "userId": 4,
+  "password": "password123"
+}
+> {%
+    client.global.set("auth_token", response.headers.valueOf("Authorization"));
+    client.log("token: " + response.headers.valueOf("Authorization"));
+%}
+
+###
+GET http://localhost:8080/hello/me
+Authorization: {{auth_token}}
+
+###
+GET http://localhost:8080/helloWorld
+Authorization: {{auth_token}}
+
+###
+GET http://localhost:8080/helloAdmin
+Authorization: {{auth_token}}
+
+###
+GET http://localhost:8080/helloUser
+Authorization: {{auth_token}}
+
+###
+GET http://localhost:8080/helloUserAdmin
+Authorization: {{auth_token}}
+

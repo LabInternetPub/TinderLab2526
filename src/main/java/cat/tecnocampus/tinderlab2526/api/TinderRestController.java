@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,10 +34,22 @@ public class TinderRestController {
         return profileInformation;
     }
 
+    @GetMapping("/profiles/me")
+    public ProfileInformation getProfile(Principal principal) {
+        ProfileInformation profileInformation = tinderService.getProfileById(Long.valueOf(principal.getName())).orElseThrow(() -> new ProfileDoesNotExistException("Profile with id " + principal.getName() + " does not exist"));
+        return profileInformation;
+    }
+
     @PostMapping("/profiles/{originId}/likes/{targetId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addLike(@PathVariable Long originId, @PathVariable Long targetId) {
         tinderService.addLike(originId, targetId);
+    }
+
+    @PostMapping("/profiles/me/likes/{targetId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addLike(Principal principal, @PathVariable Long targetId) {
+        tinderService.addLike(Long.valueOf(principal.getName()), targetId);
     }
 
     @GetMapping("/profiles/{id}/candidates")

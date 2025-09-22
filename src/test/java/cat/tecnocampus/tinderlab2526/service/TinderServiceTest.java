@@ -40,7 +40,7 @@ public class TinderServiceTest {
     @Test
     public void saveProfileTest() {
         ProfileCommand profileCommand = new ProfileCommand("paco@tecnocampus.cat", "Paco", "Man",
-                "Bisexual", "Music");
+                "Bisexual", "Music", "pepito");
 
         long before = profileRepository.count();
         Long id = tinderService.createProfile(profileCommand);

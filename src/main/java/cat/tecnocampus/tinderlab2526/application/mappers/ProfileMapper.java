@@ -14,6 +14,7 @@ public class ProfileMapper {
         profile.setGender(Gender.valueOf(inputDTO.gender()));
         profile.setAttraction(Gender.valueOf(inputDTO.attraction()));
         profile.setPassion(Passion.valueOf(inputDTO.passion()));
+        profile.setPassword(inputDTO.password());
 
         return profile;
     }
