@@ -1,6 +1,7 @@
 package cat.tecnocampus.tinderlab2526.domain;
 
 import cat.tecnocampus.tinderlab2526.domain.exceptions.IsNotCompatibleException;
+import cat.tecnocampus.tinderlab2526.domain.exceptions.OriginAlredyLikesTargetException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,6 +77,20 @@ public class DomainUnitTests {
 
         assertTrue(man.doesLike(bisexualWoman));
         assertFalse(man.isMatched(bisexualWoman));
+    }
+
+    @Test
+    void likeToCompatibleAlreadyLiked() {
+        Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(1L);
+        Profile bisexualWoman = ProfilesMotherTest.WomanAttractedByBisexualPassionMusicProfiles(2L);
+        man.createAndMatchLike(bisexualWoman);
+
+        Exception exception = assertThrows(OriginAlredyLikesTargetException.class, () -> {
+            man.createAndMatchLike(bisexualWoman);
+        });
+        String expectedMessage = man.getNickname() + " already likes " + bisexualWoman.getNickname();
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.equals(expectedMessage));
     }
 
     @Test

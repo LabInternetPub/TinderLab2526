@@ -1,6 +1,7 @@
 package cat.tecnocampus.tinderlab2526.domain;
 
 import cat.tecnocampus.tinderlab2526.domain.exceptions.IsNotCompatibleException;
+import cat.tecnocampus.tinderlab2526.domain.exceptions.OriginAlredyLikesTargetException;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -116,6 +117,9 @@ public class Profile {
 	// 1.- Create like
 	// 2.- Set like to match if it does
 	public Like createAndMatchLike(Profile target) {
+		if (this.doesLike(target))
+			throw new OriginAlredyLikesTargetException(this, target);
+
 		if (!this.isCompatible(target))
 			throw new IsNotCompatibleException(this, target);
 
