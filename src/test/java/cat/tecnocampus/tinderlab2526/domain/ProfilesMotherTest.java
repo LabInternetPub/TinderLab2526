@@ -10,6 +10,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Man);
         profile.setAttraction(Gender.Woman);
         profile.setPassion(Passion.Music);
+        profile.setPassword("pepito");
         return profile;
     }
 
@@ -21,6 +22,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Man);
         profile.setAttraction(Gender.Woman);
         profile.setPassion(Passion.Dance);
+        profile.setPassword("pepito");
         return profile;
     }
 
@@ -32,6 +34,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Man);
         profile.setPassion(Passion.Music);
+        profile.setPassword("pepito");
         return profile;
     }
 
@@ -43,6 +46,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Man);
         profile.setPassion(Passion.Dance);
+        profile.setPassword("pepito");
         return profile;
     }
 
@@ -54,6 +58,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Bisexual);
         profile.setPassion(Passion.Music);
+        profile.setPassword("pepito");
         return profile;
     }
 
@@ -65,6 +70,7 @@ public class ProfilesMotherTest {
         profile.setGender(Gender.Woman);
         profile.setAttraction(Gender.Bisexual);
         profile.setPassion(Passion.Dance);
+        profile.setPassword("pepito");
         return profile;
     }
 

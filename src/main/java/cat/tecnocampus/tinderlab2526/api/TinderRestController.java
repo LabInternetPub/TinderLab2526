@@ -57,4 +57,9 @@ public class TinderRestController {
         return tinderService.getCandidates(id);
     }
 
+    @GetMapping("/profiles/me/candidates")
+    public List<ProfileInformation> getCandidates(Principal principal) {
+        return tinderService.getCandidates(Long.valueOf(principal.getName()));
+    }
+
 }

@@ -1,7 +1,9 @@
 package cat.tecnocampus.tinderlab2526.integration;
 
 import cat.tecnocampus.tinderlab2526.domain.ProfilesMotherTest;
+import cat.tecnocampus.tinderlab2526.security.authentication.AuthenticationRequest;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +29,44 @@ public class TinderIntegrationTest {
     @Autowired
     private cat.tecnocampus.tinderlab2526.persistence.ProfileRepository profileRepository;
 
+    private static String adminToken;
+    private static String userToken;
+    private static String user3Token;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
         RestAssured.baseURI = "http://localhost";
     }
 
-    @WithMockUser("1")
+    @BeforeAll
+    static void getTokens() {
+        adminToken = getJWTToken(1L);
+        userToken = getJWTToken(2L);
+        user3Token = getJWTToken(3L);
+    }
+
+    static String getJWTToken(Long profileId) {
+        AuthenticationRequest adminRequest = new AuthenticationRequest(profileId, "password123");
+        String token = RestAssured
+                .given()
+                .contentType("application/json")
+                .body(adminRequest)
+                .when()
+                .post("/loginJWT")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .header("Authorization", startsWith("Bearer "))
+                .extract()
+                .header("Authorization");
+        return token;
+    }
+
     @Test
     void getExistingProfile() {
         RestAssured
                 .given()
+                .header("Authorization", adminToken)
                 .when()
                 .get("/profiles/1")
                 .then()
@@ -47,9 +76,23 @@ public class TinderIntegrationTest {
     }
 
     @Test
+    void getExistingProfileMe() {
+        RestAssured
+                .given()
+                .header("Authorization", userToken)
+                .when()
+                .get("/profiles/me")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("id", equalTo(2))
+                .body("nickname", equalTo("Bob"));
+    }
+
+    @Test
     void getNonExistingProfile() {
         RestAssured
             .given()
+                .header("Authorization", adminToken)
             .when()
                 .get("/profiles/999")
             .then()
@@ -62,6 +105,7 @@ public class TinderIntegrationTest {
         RestAssured
             .given()
                 .contentType("application/json")
+                .header("Authorization", adminToken)
             .when()
                 .post("/profiles/{originId}/likes/{targetId}", 2L, 3L)
             .then()
@@ -73,10 +117,28 @@ public class TinderIntegrationTest {
     }
 
     @Test
+    public void addLikesCompatibleMe() {
+        RestAssured
+                .given()
+                .contentType("application/json")
+                .header("Authorization", userToken)
+                .when()
+                .post("/profiles/me/likes/{targetId}", 3L)
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        profileRepository.findByIdWithLikes(2L).ifPresent(origin -> {
+            assertEquals(1, origin.getLikes().size());
+        });
+    }
+
+
+    @Test
     public void addLikesNotCompatible() {
         RestAssured
             .given()
                 .contentType("application/json")
+                .header("Authorization", adminToken)
             .when()
                 .post("/profiles/{originId}/likes/{targetId}", 1L, 2L)
             .then()
@@ -89,6 +151,7 @@ public class TinderIntegrationTest {
         RestAssured
             .given()
                 .contentType("application/json")
+                .header("Authorization", adminToken)
             .when()
                 .post("/profiles/{originId}/likes/{targetId}", 3L, 4L)
             .then()
@@ -101,15 +164,14 @@ public class TinderIntegrationTest {
         cat.tecnocampus.tinderlab2526.domain.Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(null);
         var response = RestAssured
                 .given()
-                .contentType("application/json")
-                .body(man)
+                    .contentType("application/json")
+                    .body(man)
                 .when()
-                .post("/profiles")
-
+                    .post("/profiles")
                 .then()
-                .statusCode(HttpStatus.CREATED.value())
-                .body(equalTo(""))
-                .header("Location", matchesRegex(".*profiles\\/\\d+$"))
+                    .statusCode(HttpStatus.CREATED.value())
+                    .body(equalTo(""))
+                    .header("Location", matchesRegex(".*profiles\\/\\d+$"))
                 .extract().response();
 
         String location = response.getHeader("Location");
@@ -146,8 +208,22 @@ public class TinderIntegrationTest {
     public void getCandidates() {
         RestAssured
             .given()
+                .header("Authorization", adminToken)
             .when()
                 .get("/profiles/{id}/candidates", 3L)
+            .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", is(2))
+                .body("id", hasItems(2, 4));
+    }
+
+    @Test
+    public void getCandidatesMe() {
+        RestAssured
+            .given()
+                .header("Authorization", user3Token)
+            .when()
+                .get("/profiles/me/candidates")
             .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("size()", is(2))
@@ -158,6 +234,7 @@ public class TinderIntegrationTest {
     public void getCandidatesNotExistingProfile() {
         RestAssured
             .given()
+                .header("Authorization", adminToken)
             .when()
                 .get("/profiles/{id}/candidates", 999L)
             .then()
