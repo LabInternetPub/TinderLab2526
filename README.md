@@ -1,5 +1,11 @@
 # Tinder. Internet Applications Lab 25-26
 
+### About de repository
+
+This repository has two branches, both implementing the same application but:
+- **tinderNOSecurity branch** is the plain application with no security implemented
+- **tinderSecurity branch** security is implemented so that users are authenticated and authorized
+
 ## Domain Overview
 
 TinderLab2526 is a Spring Boot application that simulates the core features of a dating platform. The main focus is on user profiles,
