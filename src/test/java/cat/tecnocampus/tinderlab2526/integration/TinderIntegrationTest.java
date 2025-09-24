@@ -3,7 +3,6 @@ package cat.tecnocampus.tinderlab2526.integration;
 import cat.tecnocampus.tinderlab2526.domain.ProfilesMotherTest;
 import cat.tecnocampus.tinderlab2526.security.authentication.AuthenticationRequest;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +28,14 @@ public class TinderIntegrationTest {
     @Autowired
     private cat.tecnocampus.tinderlab2526.persistence.ProfileRepository profileRepository;
 
-    private static String adminToken;
-    private static String userToken;
-    private static String user3Token;
+    private String adminToken;
+    private String userToken;
+    private String user3Token;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
         RestAssured.baseURI = "http://localhost";
-    }
-
-    @BeforeAll
-    static void getTokens() {
         adminToken = getJWTToken(1L);
         userToken = getJWTToken(2L);
         user3Token = getJWTToken(3L);
