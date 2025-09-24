@@ -88,9 +88,28 @@ We have three suites of tests:
    that the rest controller calls the application layer correctly, and finally that it handles correctly all the errors. Both domain exceptions
    and input data validation exceptions.
 
+## OPENAPI and Swagger
+We added the following dependency to add the OPENAPI documentation to our project
+```xhtml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.7.0</version>
+</dependency>
+```
+OpenAPI is a specification of how to document a REST API. The documentation is machine-readable so that it is possible to automatically generate the
+boiler code of a REST controller. Swagger is a set of tools to generate code from a specification or to generate a specification from code. 
+In our case you can access:
+- http://localhost:8080/swagger-ui/index.html to visualize and interact with the API
+- http://localhost:8080/v3/api-docs to visualize the OPENAPI documentation of the API
+
+For more information you can go to [[Learn OPNAPI]](#6) or directly to the root [[OPENAPI]](#7)
+
 ## References
 - <a id="1">[Vlad Persist]</a>  https://vladmihalcea.com/jpa-persist-merge-hibernate-save-update-saveorupdate/
 - <a id="2">[Hello Koding]</a> https://hellokoding.com/composite-primary-key-in-jpa-and-hibernate/
 - <a id="3">[RESTful]</a> https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
 - <a id="4">[Vlad Composite]</a> https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
 - <a id="5">[Vlad @oneToMany]</a> https://vladmihalcea.com/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
+- <a id="6">[Learn OPNAPI]</a> https://learn.openapis.org/introduction.html 
+- <a id="7">[OPENAPI]</a> https://www.openapis.org/
