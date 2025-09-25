@@ -23,14 +23,19 @@ content-type: application/json
   "password": "pepito"
 }
 
+
 ###
+POST http://localhost:8080/profiles/1/likes/2
+content-type: application/json
+
+### incorrect profile
 POST http://localhost:8080/profiles
 content-type: application/json
 
 {
   "email": "post2@tecnocampus.cat",
   "nickname": "ost",
-  "gender": "Woma",
+  "gender": "Wom",
   "attraction": "Woma",
   "passion": "Dane",
   "password": "   "

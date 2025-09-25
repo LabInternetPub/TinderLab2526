@@ -10,7 +10,7 @@ values ('alice@tecnocampus.cat', 'Alice', 'Woman', 'Woman', 'Music', '$2a$10$fVK
        ('eli@tecnocampus.cat', 'Eli', 'Woman', 'Man', 'Music', '$2a$10$fVKfcc47q6lrNbeXangjYeY000dmjdjkdBxEOilqhapuTO5ZH0co2'),
        ('bis@tecnocampus.cat', 'Bis', 'Bisexual', 'Bisexual', 'Music', '$2a$10$fVKfcc47q6lrNbeXangjYeY000dmjdjkdBxEOilqhapuTO5ZH0co2');
 
-insert into like_profile(origin_profile_id, target_profile_id, creation_date, matched)
+insert into like_tinder(origin_profile_id, target_profile_id, creation_date, matched)
 values (3, 4, current_date(), false); -- Carol likes Dave
 
 insert into profile_roles(profile_id, role_id)
