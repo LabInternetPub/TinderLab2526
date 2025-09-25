@@ -113,7 +113,7 @@ For more information you can go to [[Learn OPNAPI]](#6) or directly to the root 
 
 ## Security implementation with Spring Security and Json Web Tokens (JWT)
 ### Credits
-This implementation is based on [[Dan Vega's tutorial]](8). He introduces security with JWT and using the Spring Security OAUTH2 Resource
+This implementation is based on [[Dan Vega's tutorial]](#8). He introduces security with JWT and using the Spring Security OAUTH2 Resource
 Server instead of programming a Security Filter for the JWT from scratch as many tutorials (incorrectly) do.
 
 However, this example has two main differences with the Dan Vega's tutorial:
@@ -123,7 +123,7 @@ However, this example has two main differences with the Dan Vega's tutorial:
   The HS512 algorithm is simpler and is enough for this example.
 
 ### The Implementation
-This example introduces the basic concepts of Spring Security. It uses JSON Web Tokens (JWT), and you can [[JWT]](9). Since REST APIs are stateless, we need to use
+This example introduces the basic concepts of Spring Security. It uses JSON Web Tokens (JWT), and you can [[JWT]](#9). Since REST APIs are stateless, we need to use
 a mechanism to authenticate and authorize the user in each request. JWT is an encrypted token containing the user's information
 (name and permissions). We must send this token to the server in the header of each HTTP request. So, the server will
 validate the token and allow the user to access the resource if the token is valid and the user has the necessary permissions.
@@ -185,7 +185,7 @@ This filter configures other security characteristics apart from the authorizati
 * The session management is set to stateless because REST APIs are stateless. This means the server does not store the user's session, so
   it does not send a cookie to the client.
 * The resource server is configured using the JWT decoder defined in the SecurityConfigurationBeans file. We are using a part of the OAuth2 protocol, and our application plays the role of the resource server. The Oauth2 protocol is a story
-  for another day, but you can [read about it](https://auth0.com/intro-to-iam/what-is-oauth-2).
+  for another day, but you can read about it [[OAUTH2]](#11).
 * The HTTP basic is a security scheme that allows the client to authenticate with the server using a username and password. In our case,
   we are not using it.
 * And finally, we define the authorization rights for each endpoint. In the **authorizeHttpRequests**, we add a RequestMatcher for each endpoint or
@@ -223,7 +223,7 @@ Integration --> authentication
 Unit Security --> authorization
 ### Spring Security Architecture
 Security is a cross-cutting concern, and it uses a filter that intercepts the requests to the server. You can see the
-official documentation [here]https://docs.spring.io/spring-security/reference/servlet/architecture.html
+official documentation [[Security docs]](#10)
 
 ## References
 - <a id="1">[Vlad Persist]</a>  https://vladmihalcea.com/jpa-persist-merge-hibernate-save-update-saveorupdate/
@@ -235,3 +235,5 @@ official documentation [here]https://docs.spring.io/spring-security/reference/se
 - <a id="7">[OPENAPI]</a> https://www.openapis.org/
 - <a id="8">[Dan Vega's tutorial]</a> https://www.danvega.dev/blog/spring-security-jwt
 - <a id="9">[JWT]</a> https://jwt.io/introduction/
+- <a id="10">[Security docs]</a> https://docs.spring.io/spring-security/reference/servlet/architecture.html
+- <a id="11">[OAUTH2]</a> (https://auth0.com/intro-to-iam/what-is-oauth-2)
