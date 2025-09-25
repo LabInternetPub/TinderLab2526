@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "like_profile")
+@Table(name = "like_tinder")
 public class Like {
 
     @EmbeddedId

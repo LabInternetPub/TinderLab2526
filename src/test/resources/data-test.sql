@@ -6,5 +6,5 @@ values ('alice@tecnocampus.cat', 'Alice', 'Woman', 'Woman', 'Music'),
        ('eli@tecnocampus.cat', 'Eli', 'Woman', 'Man', 'Music'),
        ('bis@tecnocampus.cat', 'Bis', 'Bisexual', 'Bisexual', 'Music');
 
-insert into like_profile(origin_profile_id, target_profile_id, creation_date, matched)
+insert into like_tinder(origin_profile_id, target_profile_id, creation_date, matched)
 values (3, 4, current_date(), false); -- Carol likes Dave
