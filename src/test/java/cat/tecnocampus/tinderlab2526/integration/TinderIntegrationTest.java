@@ -17,12 +17,12 @@ import java.util.Map;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/*
+TODO: add tests for Unauthorized and Forbidden
+ */
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-<<<<<<< HEAD
-@Sql(statements = {"DELETE FROM profile_roles", "DELETE FROM role", "DELETE FROM like_profile", "DELETE FROM profile", "ALTER TABLE profile ALTER COLUMN id RESTART WITH 1", "ALTER TABLE role ALTER COLUMN id RESTART WITH 1"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-=======
-@Sql(statements = {"DELETE FROM like_tinder", "DELETE FROM profile", "ALTER TABLE profile ALTER COLUMN id RESTART WITH 1"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
->>>>>>> tinderNoSecurity
+@Sql(statements = {"DELETE FROM profile_roles", "DELETE FROM role", "DELETE FROM like_tinder", "DELETE FROM profile", "ALTER TABLE profile ALTER COLUMN id RESTART WITH 1", "ALTER TABLE role ALTER COLUMN id RESTART WITH 1"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "classpath:data-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class TinderIntegrationTest {
 

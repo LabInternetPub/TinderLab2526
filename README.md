@@ -218,9 +218,25 @@ The importance of the order of the RequestMatchers. If we have the following cod
 ```
 All requests will be allowed because the first RequestMatcher matches all paths.
 
-### Testing the Security
-Integration --> authentication
-Unit Security --> authorization
+### Testing the Security Layer
+We need to test both the authentication and authorization, as well as ensure that they integrate well with the application. We decided
+to test the authentication in the integration tests thoroughly. We also wanted to be sure that the authorization was working when the whole
+system is running, but we did not want to thoroughly test it in the integration tests because there may be quite a lot of these tests, and they may take
+too much time.
+
+Instead, we **unit** tested authorization in the *security* package, mocking the **TinderService**. Note also that when we use
+the *@@SpringBootTest* annotation the application server is simulated (Tomcat is not running).
+
+### Integration Tests
+We created a method to obtain a token that runs before each test. Once we have the token, we add it in the headers of the HTTP call.
+With these two steps we tested that the authentication process works correctly. We also added, two tests. One to test that a call
+with no token (a not authenticated user) gets a Forbidden (403)) HTTP status and another to test that a user with no permissions gets a 
+Unauthorized (401) HTTP code.
+
+### Unit Tests
+See that **TinderSecurityTest** class, where the unit test are, is annotated with 
+
+
 ### Spring Security Architecture
 Security is a cross-cutting concern, and it uses a filter that intercepts the requests to the server. You can see the
 official documentation [[Security docs]](#10)
