@@ -2,9 +2,12 @@ package cat.tecnocampus.tinderlab2526.security;
 
 import cat.tecnocampus.tinderlab2526.application.TinderService;
 import cat.tecnocampus.tinderlab2526.application.outputDTO.ProfileInformation;
+import cat.tecnocampus.tinderlab2526.domain.ProfilesMotherTest;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -56,8 +59,10 @@ public class TinderSecurityTest {
                     .body(equalTo("Hello World"));
     }
 
-    @Test
-    void helloUserUnauthorized() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles/me", "/profiles/me/candidates",
+            "hello/me", "/helloUser", "/helloUserAdmin", "/profiles/1", "/profiles/1/candidates"})
+    void notAuthenticatedUserUnauthorized() throws Exception {
         RestAssuredMockMvc
                 .when()
                     .get("/helloUser")
@@ -89,7 +94,121 @@ public class TinderSecurityTest {
                     .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles/me", "/profiles/me/candidates",
+        "hello/me", "/helloUser", "/helloUserAdmin", "/helloWorld"})
+    @WithMockUser(username = "1", authorities = "SCOPE_USER")
+    void testUserAuthorized(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .get(url)
+                .then()
+                    .statusCode(HttpStatus.OK.value());
+    }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles/1", "/profiles/1/candidates",
+         "/helloUserAdmin", "/helloWorld"})
+    @WithMockUser(username = "1", authorities = "SCOPE_ADMIN")
+    void testAdminAuthorized(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .get(url)
+                .then()
+                    .statusCode(HttpStatus.OK.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles/me", "/profiles/me/candidates",
+        "hello/me", "/helloUser"})
+    @WithMockUser(username = "1", authorities = "SCOPE_ADMIN")
+    void testAdminUnauthorized(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .get(url)
+                .then()
+                    .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles/1", "/profiles/1/candidates"})
+    @WithMockUser(username = "1", authorities = "SCOPE_USER")
+    void testUserUnauthorized(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .get(url)
+                .then()
+                    .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles", "/profiles/1/likes/3"})
+    @WithMockUser(username = "1", authorities = "SCOPE_USER")
+    void testPostUserUnauthorized(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .post(url)
+                .then()
+                    .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @WithMockUser(username = "1", authorities = "SCOPE_ADMIN")
+    void testPostAdminUnauthorized() throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .post("/profiles/me/likes/3")
+                .then()
+                    .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @WithMockUser(username = "1", authorities = "SCOPE_USER")
+    void testPostUserAuthorized() throws Exception {
+        RestAssuredMockMvc
+                .given()
+                    .contentType("application/json")
+                .when()
+                    .post("/profiles/me/likes/3")
+                .then()
+                    .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @WithMockUser(username = "1", authorities = "SCOPE_ADMIN")
+    void testPostLikeAdminAuthorized() throws Exception {
+        RestAssuredMockMvc
+                .given()
+                    .contentType("application/json")
+                .when()
+                    .post("/profiles/1/likes/3")
+                .then()
+                    .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @WithMockUser(username = "1", authorities = "SCOPE_ADMIN")
+    void testPostProfileAdminAuthorized() throws Exception {
+        cat.tecnocampus.tinderlab2526.domain.Profile man = ProfilesMotherTest.ManAttractedByWomanPassionMusicProfiles(null);
+        RestAssuredMockMvc
+                .given()
+                    .contentType("application/json")
+                    .body(man)
+                .when()
+                    .post("/profiles")
+                .then()
+                    .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/profiles", "/profiles/me/like/3"})
+    void testPostNotAuthenticated(String url) throws Exception {
+        RestAssuredMockMvc
+                .when()
+                    .post("/profiles/1/likes/3")
+                .then()
+                    .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 
     private class TestProfileInformationDTO implements ProfileInformation {
         private Long id;

@@ -226,13 +226,13 @@ too much time.
 
 Instead, we **unit** tested authorization in the *security* package, mocking the **TinderService**. 
 
-### Integration Tests
+#### Integration Tests
 We created a method to obtain a token that runs before each test. Once we have the token, we add it to the headers of the HTTP call.
 With these two steps, we tested that the authentication process works correctly. We also added two tests. One to test that a call
 with no token (a not authenticated user) gets a Forbidden (403) HTTP status, and another to test that a user with no permissions gets a 
 Unauthorized (401) HTTP code.
 
-### Unit Tests
+#### Unit Tests
 See that **TinderSecurityTest** class, where the unit tests are, is annotated with *@AutoConfigureMockMvc*, meaning that Tomcat is not
 executed. That is, the Spring's Model View Controller (MVC) machinery for Internet applications is mocked, spending less memory and CPU time. Note that 
 tests use **RestAssuredMockMvc** that in turn uses **MockMvc**. See also that **TinderService** is mocked, so the *real* one is not

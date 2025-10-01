@@ -119,12 +119,12 @@ public class TinderIntegrationTest {
     public void addLikesCompatibleMe() {
         RestAssured
                 .given()
-                .contentType("application/json")
-                .header("Authorization", userToken)
+                    .contentType("application/json")
+                    .header("Authorization", userToken)
                 .when()
-                .post("/profiles/me/likes/{targetId}", 3L)
+                    .post("/profiles/me/likes/{targetId}", 3L)
                 .then()
-                .statusCode(HttpStatus.NO_CONTENT.value());
+                    .statusCode(HttpStatus.NO_CONTENT.value());
 
         profileRepository.findByIdWithLikes(2L).ifPresent(origin -> {
             assertEquals(1, origin.getLikes().size());
@@ -164,6 +164,7 @@ public class TinderIntegrationTest {
         var response = RestAssured
                 .given()
                     .contentType("application/json")
+                    .header("Authorization", adminToken)
                     .body(man)
                 .when()
                     .post("/profiles")
@@ -190,16 +191,17 @@ public class TinderIntegrationTest {
 
         RestAssured
                 .given()
-                .contentType("application/json")
-                .body(incorrectProfile)
+                    .contentType("application/json")
+                    .header("Authorization", adminToken)
+                    .body(incorrectProfile)
                 .when()
-                .post("/profiles")
+                    .post("/profiles")
 
                 .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("title", equalTo("Bad request"))
-                .body("status", equalTo(400))
-                .body("detail", allOf(containsString("nickname"), containsString("email"), containsString("gender"),
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("title", equalTo("Bad request"))
+                    .body("status", equalTo(400))
+                    .body("detail", allOf(containsString("nickname"), containsString("email"), containsString("gender"),
                         containsString("attraction"), containsString("passion")));
     }
 

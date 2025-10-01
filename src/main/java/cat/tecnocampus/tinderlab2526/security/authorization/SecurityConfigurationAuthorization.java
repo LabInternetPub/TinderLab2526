@@ -45,8 +45,9 @@ public class SecurityConfigurationAuthorization {
                     auth.requestMatchers("/helloUser").access(hasScope("USER"));//.hasRole("USER");
                     auth.requestMatchers("/helloAdmin").access(hasScope("ADMIN"));
                     auth.requestMatchers("/helloUserAdmin").access(hasAnyScope("USER", "ADMIN"));
-                    auth.requestMatchers(HttpMethod.POST, "/profiles").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/profiles").access(hasScope("ADMIN")); //.permitAll();
                     auth.requestMatchers("/profiles/me/**").access(hasScope("USER"));
+                    auth.requestMatchers("/hello/me/**").access(hasScope("USER"));
                     auth.requestMatchers("/profiles/**").access(hasScope("ADMIN"));
                     auth.anyRequest().authenticated();
                 })
