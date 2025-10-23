@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.HashMap;
@@ -22,6 +24,8 @@ TODO: add tests for Unauthorized and Forbidden
  */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Sql(statements = {"DELETE FROM profile_roles", "DELETE FROM role", "DELETE FROM like_tinder", "DELETE FROM profile", "ALTER TABLE profile ALTER COLUMN id RESTART WITH 1", "ALTER TABLE role ALTER COLUMN id RESTART WITH 1"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "classpath:data-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class TinderIntegrationTest {
