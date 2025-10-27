@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -23,15 +22,11 @@ import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class SecurityConfigurationBeans {
-    private final ProfileDetailsService userDetailsService;
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
-    public SecurityConfigurationBeans(ProfileDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
+    /*
     @Bean
     public AuthenticationManager authManager() {
 
@@ -39,6 +34,13 @@ public class SecurityConfigurationBeans {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
+    }
+
+     */
+
+    @Bean
+    public AuthenticationManager authManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
