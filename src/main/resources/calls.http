@@ -7,6 +7,13 @@ GET http://localhost:8080/profiles/me
 Authorization: {{auth_token}}
 
 ###
+< {%
+    request.variables.set("basic_auth", "Basic " + btoa("4:password123"));
+%}
+GET http://localhost:8080/profiles/me
+Authorization: {{basic_auth}}
+
+###
 GET http://localhost:8080/profiles/1000
 Authorization: {{auth_token}}
 
@@ -50,6 +57,18 @@ Authorization: {{auth_token}}
 POST http://localhost:8080/profiles/me/likes/3
 content-type: application/json
 Authorization: {{auth_token}}
+
+### login
+< {%
+    request.variables.set("basic_auth", "Basic " + btoa("4:password123"));
+%}
+POST http://localhost:8080/token
+Authorization: {{basic_auth}}
+
+> {%
+    client.global.set("auth_token", "Bearer " + response.body);
+    client.log("token: " + "Bearer " + response.body);
+%}
 
 ### login
 POST http://localhost:8080/loginJWT
